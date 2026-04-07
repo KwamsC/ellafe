@@ -5,6 +5,7 @@
 /.pnp
 .pnp.js
 .yarn/install-state.gz
+.pnpm-store/
 
 /.idea/*
 !/.idea/runConfigurations
@@ -48,4 +49,7 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
-.pnpm-store
+
+# OpenNext
+.open-next
+.wrangler
