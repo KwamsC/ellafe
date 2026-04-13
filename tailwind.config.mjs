@@ -2,6 +2,21 @@
 const config = {
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['var(--font-mulish)', 'sans-serif'],
+        mono: ['var(--font-inter)', 'monospace'],
+        italiana: ['var(--font-italiana)'],
+      },
+      keyframes: {
+        'accordion-down': {
+          from: { height: '0' },
+          to: { height: 'var(--radix-accordion-content-height)' },
+        },
+        'accordion-up': {
+          from: { height: 'var(--radix-accordion-content-height)' },
+          to: { height: '0' },
+        },
+      },
       typography: () => ({
         DEFAULT: {
           css: [
@@ -9,6 +24,22 @@ const config = {
               '--tw-prose-body': 'var(--text)',
               '--tw-prose-headings': 'var(--text)',
               h1: {
+                fontFamily: 'var(--font-italiana)',
+                fontWeight: 'normal',
+                marginBottom: '0.25em',
+              },
+              h2: {
+                fontFamily: 'var(--font-italiana)',
+                fontWeight: 'normal',
+                marginBottom: '0.25em',
+              },
+              h3: {
+                fontFamily: 'var(--font-italiana)',
+                fontWeight: 'normal',
+                marginBottom: '0.25em',
+              },
+              h4: {
+                fontFamily: 'var(--font-italiana)',
                 fontWeight: 'normal',
                 marginBottom: '0.25em',
               },
