@@ -7,8 +7,8 @@ import { Inter } from 'next/font/google'
 import { cn } from '@/utilities/ui'
 import { AdminBar } from '@/components/AdminBar'
 import { draftMode } from 'next/headers'
-// import { Footer } from '@/Footer/Component'
-// import { Header } from '@/Header/Component'
+import { Footer } from '@/globals/Footer/Component'
+import { Header } from '@/globals/Header/Component'
 
 import './styles.css'
 import { Providers } from '@/providers'
@@ -76,7 +76,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               preview: isEnabled,
             }}
           />
+          <Header />
           {children}
+          <Footer />
         </Providers>
       </body>
     </html>
