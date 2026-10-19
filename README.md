@@ -79,21 +79,28 @@ Wrangler is pretty smart so it will automatically bind your services for local d
 
 ## Deployments
 
-When you're ready to deploy, first make sure you have created your migrations:
+After you add or change a collection, block, or field, create a migration from the current Payload config:
 
 ```bash
 pnpm payload migrate:create
 ```
 
-Then run the following command:
+Apply that migration before the next production build. Static generation reads the remote D1 database (`"remote": true` in `wrangler.jsonc`), so a build that runs first fails with `no such table`.
+
+```bash
+pnpm payload migrate
+NODE_ENV=production pnpm payload migrate
+```
+
+The first command updates the local database used by `pnpm dev`. The second updates the remote database used by `pnpm build`.
+
+Then deploy:
 
 ```bash
 pnpm run deploy
 ```
 
-This will spin up Wrangler in `production` mode, run any created migrations, build the app and then deploy the bundle up to Cloudflare.
-
-That's it! You can if you wish move these steps into your CI pipeline as well.
+`pnpm run deploy` runs the remote migration, builds the app, and deploys the bundle to Cloudflare. You can move these steps into CI as well.
 
 ## Enabling logs
 
