@@ -49,6 +49,10 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
 
   const loading = loadingFromProps || (!priority ? 'lazy' : undefined)
 
+  // Uploaded files are served by the Worker from R2 at /api/media/file.
+  // OpenNext only resolves relative /_next/image URLs from static assets, so those requests 404.
+  const isUploadedMedia = typeof src === 'string' && src.includes('/api/media/file/')
+
   // NOTE: this is used by the browser to determine which image to download at different screen sizes
   const sizes = sizeFromProps
     ? sizeFromProps
@@ -70,6 +74,7 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
         loading={loading}
         sizes={sizes}
         src={src}
+        unoptimized={isUploadedMedia}
         width={!fill ? width : undefined}
       />
     </picture>
