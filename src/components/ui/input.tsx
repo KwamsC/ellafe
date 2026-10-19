@@ -9,7 +9,7 @@ const Input: React.FC<
   return (
     <input
       className={cn(
-        'flex h-10 w-full rounded border border-border bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+        'flex h-14 w-full rounded-lg border border-field-border bg-field px-4 text-base leading-6 text-field-foreground ring-offset-0 placeholder:text-field-hint focus-visible:border-2 focus-visible:border-bronze focus-visible:outline-none disabled:cursor-not-allowed disabled:border-field-border disabled:bg-mist disabled:text-disabled aria-invalid:border-error aria-invalid:focus-visible:border-error',
         className,
       )}
       ref={ref}

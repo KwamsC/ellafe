@@ -6,6 +6,7 @@ import { Textarea as TextAreaComponent } from '@/components/ui/textarea'
 import React from 'react'
 
 import { Error } from '../Error'
+import { FieldControl } from '../FieldControl'
 import { Width } from '../Width'
 
 export const Textarea: React.FC<
@@ -27,12 +28,16 @@ export const Textarea: React.FC<
         )}
       </Label>
 
-      <TextAreaComponent
-        defaultValue={defaultValue}
-        id={name}
-        rows={rows}
-        {...register(name, { required: required })}
-      />
+      <FieldControl align="start" invalid={Boolean(errors[name])}>
+        <TextAreaComponent
+          aria-invalid={Boolean(errors[name])}
+          className={errors[name] ? 'pr-12' : undefined}
+          defaultValue={defaultValue}
+          id={name}
+          rows={rows}
+          {...register(name, { required: required })}
+        />
+      </FieldControl>
 
       {errors[name] && <Error name={name} />}
     </Width>

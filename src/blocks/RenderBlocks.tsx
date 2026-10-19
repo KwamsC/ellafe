@@ -4,12 +4,14 @@ import type { Page } from '@/payload-types'
 
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
+import { EditorialFeatureBlock } from '@/blocks/EditorialFeature/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 
 const blockComponents = {
   content: ContentBlock,
   cta: CallToActionBlock,
+  editorialFeature: EditorialFeatureBlock,
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
 }

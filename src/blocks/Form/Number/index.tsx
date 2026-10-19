@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label'
 import React from 'react'
 
 import { Error } from '../Error'
+import { FieldControl } from '../FieldControl'
 import { Width } from '../Width'
 export const Number: React.FC<
   TextField & {
@@ -24,12 +25,16 @@ export const Number: React.FC<
           </span>
         )}
       </Label>
-      <Input
-        defaultValue={defaultValue}
-        id={name}
-        type="number"
-        {...register(name, { required })}
-      />
+      <FieldControl invalid={Boolean(errors[name])}>
+        <Input
+          aria-invalid={Boolean(errors[name])}
+          className={errors[name] ? 'pr-12' : undefined}
+          defaultValue={defaultValue}
+          id={name}
+          type="number"
+          {...register(name, { required })}
+        />
+      </FieldControl>
       {errors[name] && <Error name={name} />}
     </Width>
   )

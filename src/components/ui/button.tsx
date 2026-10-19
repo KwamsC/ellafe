@@ -4,7 +4,7 @@ import { type VariantProps, cva } from 'class-variance-authority'
 import * as React from 'react'
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center whitespace-nowrap rounded-full text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+  'inline-flex items-center justify-center whitespace-nowrap rounded-full border border-transparent font-control text-base font-medium leading-6 transition-colors focus-visible:outline-[3px] focus-visible:outline-bronze focus-visible:outline-offset-0 disabled:pointer-events-none disabled:border-transparent disabled:bg-mist disabled:text-disabled',
   {
     defaultVariants: {
       size: 'default',
@@ -12,19 +12,23 @@ const buttonVariants = cva(
     },
     variants: {
       size: {
-        clear: '',
-        default: 'h-10 px-4 py-2',
-        icon: 'h-10 w-10',
-        lg: 'h-11 px-8',
-        sm: 'h-9 px-3',
+        clear: 'h-auto min-w-0 rounded-none px-0',
+        default: 'h-14 min-w-28 px-8',
+        icon: 'size-11 min-w-11 px-0',
+        lg: 'h-14 min-w-28 px-8',
+        sm: 'h-11 min-w-28 px-6',
       },
       variant: {
-        default: 'bg-primary text-primary-foreground hover:bg-primary/90',
-        destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
-        ghost: 'hover:bg-card hover:text-accent-foreground',
-        link: 'text-primary items-start justify-start underline-offset-4 hover:underline',
-        outline: 'border border-border bg-background hover:bg-card hover:text-accent-foreground',
-        secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
+        default:
+          'bg-primary text-primary-foreground hover:bg-primary-hover active:bg-primary-pressed',
+        destructive: 'bg-error text-white hover:bg-error/90',
+        ghost:
+          'bg-transparent text-tertiary-foreground hover:bg-tertiary-hover active:bg-tertiary-hover',
+        link: 'h-auto min-w-0 rounded-none bg-transparent px-0 text-link underline-offset-4 hover:underline focus-visible:outline-offset-4',
+        outline:
+          'border-secondary-border bg-transparent text-secondary-foreground hover:border-secondary-border hover:bg-secondary-hover active:bg-secondary-hover disabled:border-subtle',
+        secondary:
+          'border-secondary-border bg-transparent text-secondary-foreground hover:border-secondary-border hover:bg-secondary-hover active:bg-secondary-hover disabled:border-subtle',
       },
     },
   },

@@ -1,9 +1,7 @@
 import type { Metadata } from 'next'
 
 import React from 'react'
-import localFont from 'next/font/local'
-import { Italiana } from 'next/font/google'
-import { Inter } from 'next/font/google'
+import { Instrument_Sans, Inter, Italiana } from 'next/font/google'
 import { cn } from '@/utilities/ui'
 import { AdminBar } from '@/components/AdminBar'
 import { draftMode } from 'next/headers'
@@ -18,32 +16,6 @@ export const metadata: Metadata = {
   title: "Ella'Fe | Elevating every detail",
 }
 
-const mulish = localFont({
-  src: [
-    {
-      path: '../../../public/fonts/Mulish/Mulish-Regular.ttf',
-      weight: '400',
-      style: 'normal',
-    },
-    {
-      path: '../../../public/fonts/Mulish/Mulish-Italic.ttf',
-      weight: '400',
-      style: 'italic',
-    },
-    {
-      path: '../../../public/fonts/Mulish/Mulish-Bold.ttf',
-      weight: '700',
-      style: 'normal',
-    },
-    {
-      path: '../../../public/fonts/Mulish/Mulish-BoldItalic.ttf',
-      weight: '700',
-      style: 'italic',
-    },
-  ],
-  variable: '--font-mulish',
-})
-
 const italiana = Italiana({
   weight: '400',
   subsets: ['latin'],
@@ -56,12 +28,19 @@ const inter = Inter({
   variable: '--font-inter',
 })
 
+const instrumentSans = Instrument_Sans({
+  subsets: ['latin'],
+  weight: '500',
+  display: 'swap',
+  variable: '--font-instrument',
+})
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
 
   return (
     <html
-      className={cn(mulish.variable, italiana.variable, inter.variable)}
+      className={cn(italiana.variable, inter.variable, instrumentSans.variable)}
       lang="en"
       suppressHydrationWarning
     >

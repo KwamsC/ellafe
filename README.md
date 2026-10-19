@@ -12,13 +12,28 @@ From there you can connect your code to a git provider such Github or Gitlab, na
 
 ## Quick Start - local setup
 
-To spin up this template locally, follow these steps:
+The project uses Cloudflare D1 for SQLite and R2 for media storage. During local development, Wrangler provides local emulations for both, so you do not need a Cloudflare account or a separate database server.
 
-### Clone
+### Prerequisites
 
-After you click the `Deploy` button above, you'll want to have standalone copy of this repo on your machine. Cloudflare will connect your app to a git provider such as Github and you can access your code from there.
+Install Node.js `18.20.2` or later in the 18.x line, or `20.9.0` or later, and pnpm `9` or `10`. Run the following commands from the repository root after cloning the repository:
 
-### Local Development
+```bash
+pnpm install
+cp .env.example .env
+openssl rand -hex 32
+```
+
+Copy the value printed by `openssl` into `.env` as the value of `PAYLOAD_SECRET`.
+
+Initialize the local D1 database by applying the Payload migrations, then start the Next.js development server:
+
+```bash
+pnpm payload migrate
+pnpm dev
+```
+
+Open [http://localhost:3000](http://localhost:3000). The Payload admin is at [http://localhost:3000/admin](http://localhost:3000/admin); create the first user there. A new local database has no page content, so create and publish a page in the `Pages` collection with the slug `home` for `/` to render instead of returning 404. Local D1 and R2 data is persisted in `.wrangler/state/v3` and is not committed to the repository.
 
 ## How it works
 

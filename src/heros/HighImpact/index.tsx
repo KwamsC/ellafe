@@ -23,7 +23,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText 
 
   return (
     <div
-      className="relative isolate h-screen -mt-16 flex items-center justify-center overflow-hidden text-white"
+      className="relative isolate -mt-22 flex h-screen items-center justify-center overflow-hidden text-white"
       data-theme="dark"
     >
       <FadeIn
@@ -46,7 +46,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText 
         </div>
 
         {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-linear-to-b from-black/60 via-black/50 to-black/60" />
+        <div className="absolute inset-0 bg-black/65" />
       </FadeIn>
 
       {/* Content */}
