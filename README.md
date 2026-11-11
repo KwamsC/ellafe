@@ -26,7 +26,7 @@ openssl rand -hex 32
 
 Copy the value printed by `openssl` into `.env` as the value of `PAYLOAD_SECRET`.
 
-Initialize the local D1 database by applying the Payload migrations, then start the Next.js development server:
+Create the local D1 database, then start the Next.js development server. There is no separate database process to start. Wrangler stores the local SQLite file in `.wrangler/state/v3` and opens it when you migrate or run the app.
 
 ```bash
 pnpm payload migrate
@@ -62,6 +62,14 @@ Images will be served from an R2 bucket which you can then further configure to 
 ### D1 Database
 
 The Worker will have direct access to a D1 SQLite database which Wrangler can connect locally to, just note that you won't have a connection string as you would typically with other providers.
+
+Start the local database with:
+
+```bash
+pnpm payload migrate
+```
+
+That creates `.wrangler/state/v3` if it does not exist and applies the Payload migrations. `pnpm dev` then uses this database. See [Quick Start - local setup](#quick-start---local-setup) for the full sequence.
 
 You can enable read replicas by adding `readReplicas: 'first-primary'` in the DB adapter and then enabling it on your D1 Cloudflare dashboard. Read more about this feature on [our docs](https://payloadcms.com/docs/database/sqlite#d1-read-replicas).
 
