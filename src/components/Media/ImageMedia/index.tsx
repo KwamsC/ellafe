@@ -21,12 +21,14 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
   const {
     alt: altFromProps,
     fill,
+    height: heightFromProps,
     pictureClassName,
     imgClassName,
     priority,
     resource,
     size: sizeFromProps,
     src: srcFromProps,
+    width: widthFromProps,
     loading: loadingFromProps,
   } = props
 
@@ -38,8 +40,8 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
   if (!src && resource && typeof resource === 'object') {
     const { alt: altFromResource, height: fullHeight, url, width: fullWidth } = resource
 
-    width = fullWidth!
-    height = fullHeight!
+    width = widthFromProps || fullWidth!
+    height = heightFromProps || fullHeight!
     alt = altFromResource || ''
 
     const cacheTag = resource.updatedAt

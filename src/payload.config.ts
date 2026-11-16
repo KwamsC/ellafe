@@ -9,6 +9,7 @@ import { GetPlatformProxyOptions } from 'wrangler'
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
+import { Categories } from './collections/Categories'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { Header } from './globals/Header/config'
@@ -49,6 +50,9 @@ const cloudflare =
 export default buildConfig({
   admin: {
     user: Users.slug,
+    components: {
+      beforeLogin: ['@/components/BeforeLogin#BeforeLogin'],
+    },
     importMap: {
       baseDir: path.resolve(dirname),
     },
@@ -75,7 +79,7 @@ export default buildConfig({
       ],
     },
   },
-  collections: [Users, Media, Pages],
+  collections: [Users, Pages, Categories, Media],
   globals: [Header, Footer],
   editor: defaultLexical,
   secret: process.env.PAYLOAD_SECRET || '',

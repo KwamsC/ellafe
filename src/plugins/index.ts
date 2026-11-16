@@ -8,21 +8,30 @@ import { revalidateRedirects } from '@/hooks/revalidateRedirects'
 import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
 import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 
-import { Page } from '@/payload-types'
+import { ecommercePlugin } from '@payloadcms/plugin-ecommerce'
+import { stripeAdapter } from '@payloadcms/plugin-ecommerce/payments/stripe'
+import { Page, Product } from '@/payload-types'
 import { CloudflareContext, getCloudflareContext } from '@opennextjs/cloudflare'
 import { GetPlatformProxyOptions } from 'wrangler'
 import { r2Storage } from '@payloadcms/storage-r2'
 import { getServerSideURL } from '@/utilities/getURL'
+import { ProductsCollection } from '@/collections/Products'
+import { currencies } from '@/lib/currencies'
+import { adminOnlyFieldAccess } from '@/access/adminOnlyFieldAccess'
+import { adminOrPublishedStatus } from '@/access/adminOrPublishedStatus'
+import { customerOnlyFieldAccess } from '@/access/customerOnlyFieldAccess'
+import { isAdmin } from '@/access/isAdmin'
+import { isDocumentOwner } from '@/access/isDocumentOwner'
 
 const realpath = (value: string) => (fs.existsSync(value) ? fs.realpathSync(value) : undefined)
 const isCLI = process.argv.some((value) => realpath(value).endsWith(path.join('payload', 'bin.js')))
 const isProduction = process.env.NODE_ENV === 'production'
 
-const generateTitle: GenerateTitle<Page> = ({ doc }) => {
-  return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
+const generateTitle: GenerateTitle<Page | Product> = ({ doc }) => {
+  return doc?.title ? `${doc.title} | Ella'Fe` : "Ella'Fe"
 }
 
-const generateURL: GenerateURL<Page> = ({ doc }) => {
+const generateURL: GenerateURL<Page | Product> = ({ doc }) => {
   const url = getServerSideURL()
 
   return doc?.slug ? `${url}/${doc.slug}` : url
@@ -64,7 +73,19 @@ export const plugins: Plugin[] = [
     fields: {
       payment: false,
     },
+    formSubmissionOverrides: {
+      access: {
+        delete: isAdmin,
+        read: isAdmin,
+        update: isAdmin,
+      },
+    },
     formOverrides: {
+      access: {
+        create: isAdmin,
+        delete: isAdmin,
+        update: isAdmin,
+      },
       fields: ({ defaultFields }) => {
         return defaultFields.map((field) => {
           if ('name' in field && field.name === 'confirmationMessage') {
@@ -89,6 +110,59 @@ export const plugins: Plugin[] = [
   r2Storage({
     bucket: cloudflare.env.R2,
     collections: { media: true },
+  }),
+  ecommercePlugin({
+    access: {
+      adminOnlyFieldAccess,
+      adminOrPublishedStatus,
+      customerOnlyFieldAccess,
+      isAdmin,
+      isDocumentOwner,
+    },
+    customers: {
+      slug: 'users',
+    },
+    currencies,
+    orders: {
+      ordersCollectionOverride: ({ defaultCollection }) => ({
+        ...defaultCollection,
+        fields: [
+          ...defaultCollection.fields,
+          {
+            name: 'accessToken',
+            type: 'text',
+            unique: true,
+            index: true,
+            admin: {
+              position: 'sidebar',
+              readOnly: true,
+            },
+            hooks: {
+              beforeValidate: [
+                ({ value, operation }) => {
+                  if (operation === 'create' || !value) {
+                    return crypto.randomUUID()
+                  }
+                  return value
+                },
+              ],
+            },
+          },
+        ],
+      }),
+    },
+    payments: {
+      paymentMethods: [
+        stripeAdapter({
+          secretKey: process.env.STRIPE_SECRET_KEY || '',
+          publishableKey: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '',
+          webhookSecret: process.env.STRIPE_WEBHOOKS_SIGNING_SECRET || '',
+        }),
+      ],
+    },
+    products: {
+      productsCollectionOverride: ProductsCollection,
+    },
   }),
 ]
 

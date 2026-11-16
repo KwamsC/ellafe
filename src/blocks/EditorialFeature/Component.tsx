@@ -19,7 +19,7 @@ export const EditorialFeatureBlock: React.FC<EditorialFeatureBlockProps> = ({
 
   return (
     <section
-      className="mx-auto w-full max-w-7xl bg-white px-6 lg:px-0"
+      className="mx-auto w-full max-w-7xl py-6 bg-white px-6 lg:px-0 lg:py-0"
       data-theme="light"
     >
       <div className="grid lg:min-h-147 lg:grid-cols-2">

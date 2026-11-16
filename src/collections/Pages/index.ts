@@ -1,12 +1,17 @@
 import type { CollectionConfig } from 'payload'
 
-import { authenticated } from '../../access/authenticated'
-import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
+import { adminOnly } from '../../access/adminOnly'
+import { adminOrPublishedStatus } from '../../access/adminOrPublishedStatus'
+import { Archive } from '../../blocks/ArchiveBlock/config'
+import { Banner } from '../../blocks/Banner/config'
+import { BenefitsStrip } from '../../blocks/BenefitsStrip/config'
 import { CallToAction } from '../../blocks/CallToAction/config'
+import { Carousel } from '../../blocks/Carousel/config'
 import { Content } from '../../blocks/Content/config'
 import { EditorialFeature } from '../../blocks/EditorialFeature/config'
 import { FormBlock } from '../../blocks/Form/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
+import { ThreeItemGrid } from '../../blocks/ThreeItemGrid/config'
 import { hero } from '@/heros/config'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -24,10 +29,10 @@ import {
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
   access: {
-    create: authenticated,
-    delete: authenticated,
-    read: authenticatedOrPublished,
-    update: authenticated,
+    create: adminOnly,
+    delete: adminOnly,
+    read: adminOrPublishedStatus,
+    update: adminOnly,
   },
   // This config controls what's populated by default when a page is referenced
   // https://payloadcms.com/docs/queries/select#defaultpopulate-collection-config-property
@@ -72,7 +77,18 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, EditorialFeature, MediaBlock, FormBlock],
+              blocks: [
+                CallToAction,
+                Content,
+                EditorialFeature,
+                MediaBlock,
+                Archive,
+                Carousel,
+                ThreeItemGrid,
+                BenefitsStrip,
+                Banner,
+                FormBlock,
+              ],
               required: false,
               admin: {
                 initCollapsed: true,

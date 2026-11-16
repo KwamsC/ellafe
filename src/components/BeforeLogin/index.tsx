@@ -11,4 +11,5 @@ const BeforeLogin: React.FC = () => {
   )
 }
 
+export { BeforeLogin }
 export default BeforeLogin

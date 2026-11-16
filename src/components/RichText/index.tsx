@@ -70,3 +70,5 @@ export default function RichText(props: Props) {
     />
   )
 }
+
+export { RichText }

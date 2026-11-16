@@ -47,13 +47,46 @@ See the [Collections](https://payloadcms.com/docs/configuration/collections) doc
 
 - #### Users (Authentication)
 
-  Users are auth-enabled collections that have access to the admin panel.
-
-  For additional help, see the official [Auth Example](https://github.com/payloadcms/payload/tree/main/examples/auth) or the [Authentication](https://payloadcms.com/docs/authentication/overview#authentication-overview) docs.
+  Customers and admins share the `users` collection. Roles are `admin` and `customer`. Public registration creates a customer. Only users with the `admin` role can open `/admin`. The first user created in an empty database is made an admin. The ecommerce migration also sets every existing user to `admin`, so accounts created before roles existed can still sign in to the admin panel.
 
 - #### Media
 
-  This is the uploads enabled collection.
+  This is the uploads enabled collection. Product images use the same R2 media route as the rest of the site.
+
+## Shop
+
+The storefront sits beside the existing site and uses the same header, footer, and fonts. Prices are in EUR. Enable EUR in the Stripe dashboard before taking payments.
+
+The ecommerce plugin adds products, variants, variant types, variant options, carts, addresses, orders, and transactions. Categories is a separate collection. Pages can also use the Archive, Carousel, Three Item Grid, and Banner blocks.
+
+### Storefront URLs
+
+- `/shop` and `/products/[slug]`
+- `/checkout` and `/checkout/confirm-order`
+- `/login`, `/logout`, `/create-account`, `/forgot-password`, and `/find-order`
+- `/account`, `/account/addresses`, `/account/orders`, and `/account/orders/[id]`
+
+The header links to the account page and opens the cart. Guests can look up an order at `/find-order` with the email address and access token from checkout. Those emails are printed by the console logger until an email adapter is configured. Nodemailer is not used, because it is not available in Workers.
+
+### Stripe
+
+Add these to `.env` for local checkout:
+
+```bash
+STRIPE_SECRET_KEY=
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
+STRIPE_WEBHOOKS_SIGNING_SECRET=
+```
+
+Stripe sends payment events to `/api/payments/stripe/webhooks`. Forward them to the local server with the Stripe CLI:
+
+```bash
+pnpm stripe-webhooks
+```
+
+That runs `stripe listen --forward-to localhost:3000/api/payments/stripe/webhooks`. Put production keys in Worker secrets, not in the repository.
+
+Products and categories are created in the admin. Publishing or deleting a product revalidates `/shop` and `/products/[slug]` with the same cache hooks used by pages.
 
 ### Image Storage (R2)
 
